@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Responsive Registration Form | CodingLab</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include CryptoJS library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.3.0/crypto-js.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Registration</div>
+        <div class="content">
+            <form action="#" method="post" id="registrationForm">
+                <div class="user-details">
+                    <div class="input-box">
+                        <span class="details">Full Name</span>
+                        <input type="text" name="fullName" placeholder="Enter your name" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Username</span>
+                        <input type="text" name="username" id="username" placeholder="Enter your username" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Email</span>
+                        <input type="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Phone Number</span>
+                        <input type="tel" name="phoneNumber" placeholder="Enter your number" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Password</span>
+                        <input type="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Confirm Password</span>
+                        <input type="password" name="confirmPassword" placeholder="Confirm your password" required>
+                    </div>
+                </div>
+                <div class="gender-details">
+                    <span class="gender-title">Gender</span>
+                    <div class="category">
+                        <input type="radio" name="gender" id="dot-1">
+                        <label for="dot-1">
+                            <span class="dot one"></span>
+                            <span class="gender">Male</span>
+                        </label>
+                        <input type="radio" name="gender" id="dot-2">
+                        <label for="dot-2">
+                            <span class="dot two"></span>
+                            <span class="gender">Female</span>
+                        </label>
+                        <input type="radio" name="gender" id="dot-3">
+                        <label for="dot-3">
+                            <span class="dot three"></span>
+                            <span class="gender">Prefer not to say</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <span class="details">Role</span>
+                    <select name="role" required>
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="button">
+                    <input type="submit" value="Register">
+                    <a href="forget_password.html">Forgot your password? Click Here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add MFA setup section -->
+    <div class="mfa-setup" style="display: none;">
+        <h2>Set up Multi-Factor Authentication</h2>
+        <form id="mfa-setup-form">
+            <div class="input-box">
+                <span class="details">Secret Key</span>
+                <input type="text" id="mfa-secret" readonly>
+            </div>
+            <div class="input-box">
+                <span class="details">Verification Code</span>
+                <input type="text" id="mfa-verification-code" required>
+            </div>
+            <div class="button">
+                <input type="button" value="Verify and Enable MFA" onclick="enableMFA()">
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/speakeasy@6.0.0/dist/speakeasy.min.js"></script>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4"></script>
+    <script src="script.js"></script>
+
+    <!-- Your encryption/decryption script -->
+    <script>
+        function encryptUsername(username, key) {
+            const encryptedData = CryptoJS.AES.encrypt(username, key);
+            return encryptedData.toString();
+        }
+
+        function decryptUsername(encryptedUsername, key) {
+            const decryptedData = CryptoJS.AES.decrypt(encryptedUsername, key);
+            return decryptedData.toString(CryptoJS.enc.Utf8);
+        }
+
+        // Example usage
+        const usernameInput = document.getElementById('username');
+        const encryptionKey = '11';  // Replace with your key
+
+        // Encrypt username before submitting the form
+        document.getElementById('registrationForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const username = usernameInput.value;
+            const encryptedUsername = encryptUsername(username, encryptionKey);
+            usernameInput.value = encryptedUsername;
+
+            // Continue with form submission
+            // ...
+        });
+    </script>
+</body>
+</html>
+
